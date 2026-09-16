@@ -1,16 +1,58 @@
-# React + Vite
+# Bin QR Generator — Warehouse TOAT Operations (PWA)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Fast, lightweight, mobile-first **Bin QR Generator** engineered for dark store & warehouse TOAT operations.
 
-Currently, two official plugins are available:
+## Features
+- **100% Client-Side & Offline Ready**: Progressive Web App (PWA) with Service Worker caching.
+- **Minimum Typing Workflow**:
+  - Automatically handles fixed `CPLM-` prefix.
+  - Auto-uppercase conversion.
+  - Auto-hyphenation for 4-segment codes (e.g., `a1b15` → `CPLM-A-1-B-15`).
+  - Auto-hyphenation for 2-segment codes (e.g., `a18` → `CPLM-A-18`).
+- **Laser-Friendly QR**: Rendered in a high-contrast pure white container (`#ffffff`) with dark modules (`#000000`) for instant barcode scanner reads.
+- **Tactile Haptic Feedback**: Subtle vibration on mobile devices when a QR code is ready to scan.
+- **Single-Action Workflow**: Large `Clear` button resets and auto-focuses the input for continuous bin processing.
+- **Theme Persistence**: Light and Dark mode with `localStorage` persistence.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Deploy to Vercel
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Option 1: Via GitHub (Recommended)
+1. Push this repository to GitHub:
+   ```bash
+   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+   git branch -M main
+   git push -u origin main
+   ```
+2. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
+3. Import your GitHub repository.
+4. Framework Preset: **Vite** (auto-detected).
+5. Build Command: `npm run build`
+6. Output Directory: `dist`
+7. Click **Deploy**. Done!
 
-## Expanding the Oxlint configuration
+### Option 2: Via Vercel CLI
+Run inside this project directory:
+```bash
+npx vercel
+```
+Follow the terminal prompts (defaults are pre-configured in `vercel.json`).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+---
+
+## Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
+```
