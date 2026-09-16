@@ -501,6 +501,12 @@ body {
   padding: 4px;
 }
 
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .alphabet-selector-container {
   overflow-x: auto;
   padding-bottom: 2px;
@@ -590,6 +596,89 @@ body {
   background: var(--text-primary);
   color: var(--bg-card);
   border-color: var(--text-primary);
+}
+
+/* Level Filter Styles (1 to 30) */
+.level-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.level-range-chips {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.level-range-btn {
+  padding: 2px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: all 0.1s ease;
+}
+
+.level-range-btn.active {
+  background: var(--accent-purple);
+  color: #ffffff;
+  border-color: var(--accent-purple);
+}
+
+.level-scroll-container {
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.level-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.level-scroll-row {
+  display: flex;
+  gap: 4px;
+  min-width: max-content;
+}
+
+.level-pill-btn {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 4px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s ease;
+}
+
+.level-pill-btn.active {
+  background: var(--text-primary);
+  color: var(--bg-card);
+  border-color: var(--text-primary);
+}
+
+.level-pill-btn.out-of-range {
+  opacity: 0.4;
 }
 
 .suggestions-grid-wrapper {
