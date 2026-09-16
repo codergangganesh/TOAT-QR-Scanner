@@ -3,6 +3,7 @@ import Header from './components/Header';
 import BinInput from './components/BinInput';
 import QrCard from './components/QrCard';
 import ActionControls from './components/ActionControls';
+import BinSuggestions from './components/BinSuggestions';
 import { parseBinCode } from './utils/binFormatter';
 
 const THEME_STORAGE_KEY = 'zepto_warehouse_theme';
@@ -104,6 +105,15 @@ export default function App() {
     }
   };
 
+  // Select bin from suggestions section
+  const handleSelectBin = (code) => {
+    // Extract suffix e.g. "CPLM-A-1-A-1" -> "A1A1"
+    const suffix = code.replace('CPLM-', '').replace(/-/g, '');
+    setRawInput(suffix);
+    // Smoothly scroll to top so the QR code is immediately visible to scan
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="app-wrapper">
       <main className="mobile-container">
@@ -128,6 +138,12 @@ export default function App() {
 
         {/* Primary Clear & Next Bin Action */}
         <ActionControls onClear={handleClear} />
+
+        {/* Separate Bin Sub-Name Suggestions Section */}
+        <BinSuggestions
+          onSelectBin={handleSelectBin}
+          currentCode={parsed.formattedCode}
+        />
       </main>
     </div>
   );
