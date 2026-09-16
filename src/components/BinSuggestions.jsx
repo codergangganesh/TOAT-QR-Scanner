@@ -47,12 +47,15 @@ export default function BinSuggestions({ onSelectBin, currentCode }) {
   }, [selectedLevelRange, selectedExactLevel]);
 
   // Generate suggestions based on selected filters or search query
-  const suggestions = useMemo(() => {
+  const MAX_DISPLAY = 100;
+
+  // Generate suggestions based on selected filters or search query
+  const { displayedSuggestions, totalMatches } = useMemo(() => {
     const query = searchQuery.trim().toUpperCase();
 
     // Fast search mode across all A-Z, A-Z, 1-30 combinations
     if (query) {
-      const results = [];
+      const allMatches = [];
       for (const f of FIRST_LETTERS) {
         for (const s of SECOND_LETTERS) {
           for (const l of ALL_LEVELS) {
@@ -64,13 +67,15 @@ export default function BinSuggestions({ onSelectBin, currentCode }) {
               shortPattern.includes(query) ||
               compactPattern.includes(query)
             ) {
-              results.push(code);
-              if (results.length >= 100) return results; // Capped for mobile 60fps performance
+              allMatches.push(code);
             }
           }
         }
       }
-      return results;
+      return {
+        displayedSuggestions: allMatches.slice(0, MAX_DISPLAY),
+        totalMatches: allMatches.length,
+      };
     }
 
     // Default filtered view by selected first letter, second letter, and levels
@@ -85,7 +90,11 @@ export default function BinSuggestions({ onSelectBin, currentCode }) {
         }
       }
     }
-    return results;
+
+    return {
+      displayedSuggestions: results.slice(0, MAX_DISPLAY),
+      totalMatches: results.length,
+    };
   }, [selectedFirst, selectedSecond, activeLevels, searchQuery]);
 
   return (
@@ -252,26 +261,34 @@ export default function BinSuggestions({ onSelectBin, currentCode }) {
 
       {/* 4. Suggestions Grid List */}
       <div className="suggestions-grid-wrapper">
-        {suggestions.length === 0 ? (
+        {displayedSuggestions.length === 0 ? (
           <div className="no-suggestions-msg">No matching bin codes found</div>
         ) : (
-          <div className="suggestions-grid">
-            {suggestions.map((code) => {
-              const isSelected = currentCode === code;
-              return (
-                <button
-                  key={code}
-                  type="button"
-                  className={`bin-suggestion-pill ${isSelected ? 'active-bin' : ''}`}
-                  onClick={() => onSelectBin(code)}
-                  aria-label={`Select bin ${code}`}
-                >
-                  <span className="bin-code-text">{code}</span>
-                  {isSelected && <Check size={14} className="bin-check-icon" />}
-                </button>
-              );
-            })}
-          </div>
+          <>
+            <div className="suggestions-grid">
+              {displayedSuggestions.map((code) => {
+                const isSelected = currentCode === code;
+                return (
+                  <button
+                    key={code}
+                    type="button"
+                    className={`bin-suggestion-pill ${isSelected ? 'active-bin' : ''}`}
+                    onClick={() => onSelectBin(code)}
+                    aria-label={`Select bin ${code}`}
+                  >
+                    <span className="bin-code-text">{code}</span>
+                    {isSelected && <Check size={14} className="bin-check-icon" />}
+                  </button>
+                );
+              })}
+            </div>
+            {totalMatches > MAX_DISPLAY && (
+              <div className="suggestions-limit-notice">
+                Showing first 100 of {totalMatches.toLocaleString()} matching bins.
+                Narrow down using the Aisle (A–Z) or Shelf (A–Z) tabs above.
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

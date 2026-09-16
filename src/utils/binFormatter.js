@@ -45,6 +45,62 @@ export function sanitizeInput(input) {
 }
 
 /**
+ * Normalizes spoken speech input into a clean alphanumeric bin suffix.
+ * Handles spoken words like "A one B fifteen" -> "A1B15" or "A eighteen" -> "A18".
+ * @param {string} text - speech recognition transcript
+ * @returns {string} normalized suffix
+ */
+export function normalizeSpokenBin(text) {
+  if (!text) return '';
+
+  let str = text.toLowerCase().trim();
+
+  // Strip leading CPLM if spoken
+  str = str.replace(/\bcplm\b/gi, '').replace(/\bc\s*p\s*l\s*m\b/gi, '');
+
+  // Replace compound tens (21 to 29)
+  const compounds = {
+    'twenty one': '21', 'twenty-one': '21',
+    'twenty two': '22', 'twenty-two': '22',
+    'twenty three': '23', 'twenty-three': '23',
+    'twenty four': '24', 'twenty-four': '24',
+    'twenty five': '25', 'twenty-five': '25',
+    'twenty six': '26', 'twenty-six': '26',
+    'twenty seven': '27', 'twenty-seven': '27',
+    'twenty eight': '28', 'twenty-eight': '28',
+    'twenty nine': '29', 'twenty-nine': '29'
+  };
+  for (const [k, v] of Object.entries(compounds)) {
+    str = str.replaceAll(k, v);
+  }
+
+  // Replace single number words
+  const singles = {
+    zero: '0', one: '1', won: '1', two: '2', to: '2', too: '2',
+    three: '3', four: '4', for: '4', fore: '4', five: '5',
+    six: '6', seven: '7', eight: '8', ate: '8', nine: '9',
+    ten: '10', eleven: '11', twelve: '12', thirteen: '13',
+    fourteen: '14', fifteen: '15', sixteen: '16', seventeen: '17',
+    eighteen: '18', nineteen: '19', twenty: '20', thirty: '30'
+  };
+  for (const [k, v] of Object.entries(singles)) {
+    str = str.replace(new RegExp(`\\b${k}\\b`, 'gi'), v);
+  }
+
+  // Strip all non-alphanumerics except hyphen
+  let cleaned = str.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+
+  // Strip CPLM if still remaining
+  if (cleaned.startsWith('CPLM-')) {
+    cleaned = cleaned.slice(5);
+  } else if (cleaned.startsWith('CPLM')) {
+    cleaned = cleaned.slice(4);
+  }
+
+  return cleaned.replace(/-/g, '');
+}
+
+/**
  * Parses and formats bin code according to warehouse TOAT standards.
  *
  * @param {string} rawInput
@@ -155,3 +211,41 @@ export function parseBinCode(rawInput) {
     statusMessage: hint,
   };
 }
+
+/**
+ * Calculates the next (+1) or previous (-1) sequential bin code.
+ * Supports:
+ * - 4-Segment TOAT (e.g. A1B15 -> A1B16 / A1B14)
+ * - 2-Segment Location (e.g. A18 -> A19 / A17)
+ *
+ * @param {string} rawInput - current bin code string
+ * @param {number} direction - +1 for next, -1 for previous
+ * @returns {string|null} new bin suffix or null if cannot step
+ */
+export function stepBinCode(rawInput, direction) {
+  const sanitized = sanitizeInput(rawInput);
+  if (!sanitized) return null;
+
+  const cleanChars = sanitized.replace(/-/g, '');
+
+  // 4-Segment TOAT: [Aisle][Bay][Shelf][Slot] e.g. A1B15
+  const match4 = cleanChars.match(/^([A-Z]+)(\d+)([A-Z]+)(\d+)$/);
+  if (match4) {
+    const [, aisle, bay, shelf, slotStr] = match4;
+    const slot = parseInt(slotStr, 10);
+    const newSlot = Math.max(1, slot + direction);
+    return `${aisle}${bay}${shelf}${newSlot}`;
+  }
+
+  // 2-Segment Location: [Aisle/Zone][Slot/Bin] e.g. A18
+  const match2 = cleanChars.match(/^([A-Z]+)(\d+)$/);
+  if (match2) {
+    const [, aisle, numStr] = match2;
+    const num = parseInt(numStr, 10);
+    const newNum = Math.max(1, num + direction);
+    return `${aisle}${newNum}`;
+  }
+
+  return null;
+}
+

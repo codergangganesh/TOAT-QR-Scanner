@@ -8,6 +8,8 @@ export default function BinInput({
   onClear,
   inputRef,
   onKeyDown,
+  onFocus,
+  onClick,
 }) {
   const handleInputChange = (e) => {
     onChange(e.target.value);
@@ -30,6 +32,8 @@ export default function BinInput({
           placeholder="A18 or A1B15"
           value={value}
           onChange={handleInputChange}
+          onFocus={onFocus}
+          onClick={onClick}
           onKeyDown={onKeyDown}
           autoComplete="off"
           autoCorrect="off"
