@@ -1,0 +1,412 @@
+/* Modern CSS Reset and Variable Tokens */
+:root {
+  /* Light Mode Variables */
+  --bg-app: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-surface: #f8fafc;
+  --bg-input: #ffffff;
+  --border-color: #cbd5e1;
+  --border-focus: #2563eb;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --prefix-bg: #e2e8f0;
+  --prefix-text: #1e293b;
+  --accent-emerald: #059669;
+  --accent-emerald-bg: #ecfdf5;
+  --accent-purple: #7c3aed;
+  --qr-frame-bg: #ffffff;
+  --qr-frame-border: #e2e8f0;
+  --button-clear-bg: #ef4444;
+  --button-clear-hover: #dc2626;
+  --button-clear-text: #ffffff;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] {
+  /* Dark Mode Variables - High Contrast Warehouse Utility */
+  --bg-app: #080c14;
+  --bg-card: #0f172a;
+  --bg-surface: #172136;
+  --bg-input: #1b263b;
+  --border-color: #273549;
+  --border-focus: #3b82f6;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --prefix-bg: #1e293b;
+  --prefix-text: #38bdf8;
+  --accent-emerald: #10b981;
+  --accent-emerald-bg: rgba(16, 185, 129, 0.15);
+  --accent-purple: #8b5cf6;
+  --qr-frame-bg: #ffffff; /* Must remain pure white for laser scanner reliability */
+  --qr-frame-border: #ffffff;
+  --button-clear-bg: #dc2626;
+  --button-clear-hover: #b91c1c;
+  --button-clear-text: #ffffff;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+
+/* App Wrapper - Mobile First */
+.app-wrapper {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: env(safe-area-inset-top, 8px) env(safe-area-inset-right, 8px)
+    env(safe-area-inset-bottom, 8px) env(safe-area-inset-left, 8px);
+  background-color: var(--bg-app);
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 440px;
+  min-height: calc(100dvh - 16px);
+  background-color: var(--bg-card);
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+/* Header Section */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-branding {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+  flex-shrink: 0;
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-titles h1,
+.app-title {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.96);
+}
+
+/* Input Section */
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.input-box {
+  display: flex;
+  align-items: stretch;
+  background-color: var(--bg-input);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-box:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.input-prefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--prefix-bg);
+  color: var(--prefix-text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 800;
+  padding: 0 12px;
+  user-select: none;
+  border-right: 1px solid var(--border-color);
+  letter-spacing: 0.05em;
+}
+
+.bin-text-input {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 0 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bin-text-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.input-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.input-clear-btn:active {
+  color: var(--text-primary);
+}
+
+/* Formatted Code Display */
+.code-display-card {
+  text-align: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.code-display-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+
+.code-display-placeholder {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* Enlarged QR Code Section */
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  justify-content: center;
+}
+
+.qr-canvas-wrapper {
+  background-color: var(--qr-frame-bg);
+  border: 3px solid var(--qr-frame-border);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  width: 275px;
+  height: 275px;
+  max-width: 90vw;
+  max-height: 90vw;
+}
+
+.qr-placeholder-wrapper {
+  background-color: var(--bg-surface);
+  border: 2px dashed var(--border-color);
+  border-radius: 18px;
+  width: 275px;
+  height: 275px;
+  max-width: 90vw;
+  max-height: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+}
+
+.qr-placeholder-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Status Indicator */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.status-pill.ready {
+  background-color: var(--accent-emerald-bg);
+  color: var(--accent-emerald);
+}
+
+.status-pill.standby {
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* Action Controls (Streamlined: Only Primary CLEAR & NEXT BIN) */
+.actions-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.action-btn {
+  height: 54px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  border: none;
+  user-select: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+}
+
+.action-btn-clear {
+  background-color: var(--button-clear-bg);
+  color: var(--button-clear-text);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.action-btn-clear:hover {
+  background-color: var(--button-clear-hover);
+}
+
+/* Responsive adjustment for compact mobile devices */
+@media (max-height: 720px) {
+  .mobile-container {
+    padding: 12px;
+    gap: 10px;
+  }
+  .qr-canvas-wrapper,
+  .qr-placeholder-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+  .bin-text-input {
+    height: 48px;
+    font-size: 1.15rem;
+  }
+  .action-btn {
+    height: 48px;
+  }
+}

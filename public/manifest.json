@@ -1,0 +1,19 @@
+{
+  "name": "Bin QR Generator — TOAT Warehouse Ops",
+  "short_name": "QR Generator",
+  "description": "Ultra-fast mobile QR code generator for warehouse TOAT operations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080c14",
+  "theme_color": "#080c14",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/zepto-logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity", "business"]
+}
